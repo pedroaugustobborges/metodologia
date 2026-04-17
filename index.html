@@ -1056,25 +1056,32 @@
         color: rgba(255, 255, 255, 0.75);
       }
 
-      /* ── NAVIGATION ── */
+/* ── NAVIGATION ── */
       .nav {
         position: fixed;
-        bottom: 36px;
+        bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
         align-items: center;
         gap: 12px;
-        background: rgba(10, 22, 40, 0.5);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(10, 22, 40, 0.15);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: 100px;
-        padding: 10px 20px;
+        padding: 6px 16px;
         z-index: 100;
+        opacity: 0.3;
+        transition: all 0.3s;
+      }
+      .nav:hover {
+        opacity: 1;
+        background: rgba(10, 22, 40, 0.7);
+        backdrop-filter: blur(12px);
       }
       .nav-btn {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         background: transparent;
         border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 50%;
