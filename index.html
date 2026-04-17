@@ -131,15 +131,21 @@
           linear-gradient(90deg, rgba(0, 94, 162, 0.05) 1px, transparent 1px);
         background-size: 60px 60px;
       }
+
+      /* FIX: cover-content agora usa overflow-y auto e padding vertical seguro */
       .cover-content {
         position: relative;
         z-index: 2;
         display: flex;
         flex-direction: column;
-        gap: 28px;
+        gap: clamp(14px, 2vh, 28px);
         max-width: 720px;
         align-items: center;
         text-align: center;
+        width: 100%;
+        padding: clamp(60px, 8vh, 80px) 0 clamp(60px, 8vh, 80px);
+        overflow-y: auto;
+        max-height: 100vh;
       }
       .cover-eyebrow {
         display: flex;
@@ -147,7 +153,6 @@
         gap: 12px;
         opacity: 0;
         animation: fadeUp 0.7s 0.2s forwards;
-        padding-top: 60px;
       }
       .cover-eyebrow .line {
         width: 40px;
@@ -156,7 +161,7 @@
       }
       .cover-eyebrow span {
         font-family: "DM Sans", sans-serif;
-        font-size: 15px;
+        font-size: clamp(12px, 1.2vw, 15px);
         font-weight: 500;
         letter-spacing: 3px;
         text-transform: uppercase;
@@ -164,7 +169,7 @@
       }
       .cover-title {
         font-family: "Syne", sans-serif;
-        font-size: clamp(2.2rem, 4.5vw, 4rem);
+        font-size: clamp(1.6rem, 3.5vw, 4rem);
         font-weight: 800;
         color: var(--white);
         line-height: 1.1;
@@ -175,7 +180,7 @@
         color: var(--sus-accent);
       }
       .cover-subtitle {
-        font-size: 1.15rem;
+        font-size: clamp(0.85rem, 1.1vw, 1.15rem);
         color: rgba(255, 255, 255, 0.6);
         font-weight: 300;
         line-height: 1.6;
@@ -186,10 +191,9 @@
       .cover-meta {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 32px 40px;
+        gap: clamp(12px, 2vh, 32px) 40px;
         opacity: 0;
         animation: fadeUp 0.7s 0.65s forwards;
-        margin-top: 8px;
         width: 100%;
         max-width: 720px;
       }
@@ -208,7 +212,7 @@
         font-weight: 500;
       }
       .meta-value {
-        font-size: 1rem;
+        font-size: clamp(0.82rem, 1vw, 1rem);
         color: rgba(255, 255, 255, 0.85);
         font-weight: 400;
       }
@@ -232,7 +236,7 @@
         animation: pulse 2s infinite;
       }
       .badge-text {
-        font-size: 0.9rem;
+        font-size: clamp(0.78rem, 0.9vw, 0.9rem);
         color: rgba(255, 255, 255, 0.7);
       }
 
@@ -1056,7 +1060,7 @@
         color: rgba(255, 255, 255, 0.75);
       }
 
-/* ── NAVIGATION ── */
+      /* ── NAVIGATION ── */
       .nav {
         position: fixed;
         bottom: 20px;
@@ -1288,6 +1292,7 @@
   </head>
   <body>
     <div class="presentation" id="pres">
+
       <!-- ══ SLIDE 0: CAPA ══ -->
       <div class="slide slide-cover active" data-index="0">
         <div class="cover-bg"></div>
@@ -1312,43 +1317,30 @@
               <span class="meta-label">Autor</span>
               <span class="meta-value">Pedro Augusto Barbosa Borges</span>
             </div>
-
             <div class="meta-item">
               <span class="meta-label">Orientador</span>
               <span class="meta-value">Prof. Dr. Fernando Cupertino</span>
             </div>
-
             <div class="meta-item">
               <span class="meta-label">Co-orientador</span>
               <span class="meta-value">Prof Dr. Ronaldo Costa</span>
             </div>
             <div class="meta-item">
               <span class="meta-label">UFG</span>
-              <span class="meta-value"
-                >IPTSP</span
-              >
+              <span class="meta-value">IPTSP</span>
             </div>
-            
             <div class="meta-item">
               <span class="meta-label">Ano</span>
               <span class="meta-value">Goiânia – GO, 2026</span>
             </div>
-            
             <div class="meta-item">
               <span class="meta-label">Linha de Pesquisa</span>
-              <span class="meta-value"
-                >Gestão de Sistemas e Processos Gerenciais</span
-              >
+              <span class="meta-value">Gestão de Sistemas e Processos Gerenciais</span>
             </div>
-
-            
-
           </div>
           <div class="cover-badge">
             <span class="badge-dot"></span>
-            <span class="badge-text"
-              >Projeto de Pesquisa – Apresentação Oral · 2026</span
-            >
+            <span class="badge-text">Projeto de Pesquisa – Apresentação Oral · 2026</span>
           </div>
         </div>
       </div>
@@ -1626,10 +1618,7 @@
             <div class="hyp-main">
               <p class="hyp-text">
                 A utilização de ferramenta de
-
-                <span class="hl"
-                  >linguagem natural baseada em Inteligência Artificial</span
-                >, será capaz de produzir estimativas de custo de infraestrutura
+                <span class="hl">linguagem natural baseada em Inteligência Artificial</span>, será capaz de produzir estimativas de custo de infraestrutura
                 hospitalar com acurácia comparável à prática convencional,
                 reduzindo o tempo de resposta e aumentando a satisfação dos
                 gestores responsáveis pelo planejamento físico do SUS.
@@ -2056,13 +2045,11 @@
       </div>
 
       <!-- ══ SLIDE 9: ENCERRAMENTO ══ -->
-<div class="slide slide-closing" data-index="9">
+      <div class="slide slide-closing" data-index="9">
         <div class="cover-bg closing-bg"></div>
         <div class="cover-grid"></div>
         <div class="closing-content" style="height: 100vh; width: 100vw; justify-content: space-between; padding-bottom: 10vh;">
-          
           <div></div>
-
           <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
             <div class="closing-thank-you">OBRIGADO</div>
             <h2 class="closing-title" style="font-size: 1.4rem;">
@@ -2072,7 +2059,6 @@
               Fico à disposição para as arguições.
             </p>
           </div>
-
           <div class="closing-contact" style="margin-top: 0;">
             <div class="contact-item">
               <span class="contact-label">Autor</span>
@@ -2087,9 +2073,10 @@
               <span class="contact-value">Goiânia – GO, 2026</span>
             </div>
           </div>
-          
         </div>
       </div>
+
+    </div>
     <!-- /presentation -->
 
     <!-- NAVIGATION -->
@@ -2110,7 +2097,6 @@
       const navProgress = document.getElementById("navProgress");
       let current = 0;
 
-      // Build dots
       slides.forEach((_, i) => {
         const d = document.createElement("div");
         d.className = "nav-dot" + (i === 0 ? " active" : "");
