@@ -415,11 +415,11 @@
 
       .card-number {
         font-family: "Syne", sans-serif;
-        font-size: 2.8rem;
+        font-size: 3.4rem;
         font-weight: 800;
         color: var(--sus-blue);
         line-height: 1;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
       }
       .card.dark-card .card-number {
         color: var(--sus-accent);
@@ -610,7 +610,7 @@
       }
       .hyp-text {
         font-family: "Syne", sans-serif;
-        font-size: 1.35rem;
+        font-size: 1.5rem;
         font-weight: 600;
         color: var(--white);
         line-height: 1.55;
@@ -621,7 +621,7 @@
         color: var(--sus-accent);
       }
       .hyp-source {
-        font-size: 0.88rem;
+        font-size: 1rem;
         color: rgba(255, 255, 255, 0.4);
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         padding-top: 16px;
@@ -687,9 +687,9 @@
       .method-flow::before {
         content: "";
         position: absolute;
-        left: 20px;
-        top: 20px;
-        bottom: 20px;
+        left: 24px;
+        top: 24px;
+        bottom: 24px;
         width: 2px;
         background: linear-gradient(
           to bottom,
@@ -706,8 +706,8 @@
         position: relative;
       }
       .step-dot {
-        width: 42px;
-        height: 42px;
+        width: 50px;
+        height: 50px;
         background: var(--white);
         border: 2px solid var(--sus-blue);
         border-radius: 50%;
@@ -717,7 +717,7 @@
         flex-shrink: 0;
         z-index: 1;
         font-family: "Syne", sans-serif;
-        font-size: 14px;
+        font-size: 18px;
         font-weight: 700;
         color: var(--sus-blue);
       }
@@ -731,12 +731,12 @@
       }
       .step-title {
         font-weight: 600;
-        font-size: 0.98rem;
+        font-size: 1.08rem;
         color: var(--dark);
         margin-bottom: 4px;
       }
       .step-desc {
-        font-size: 0.88rem;
+        font-size: 0.96rem;
         color: var(--muted);
         line-height: 1.5;
       }
@@ -1010,6 +1010,14 @@
         align-items: center;
         gap: 24px;
       }
+      .closing-thank-you {
+        font-family: "Syne", sans-serif;
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--sus-accent);
+        letter-spacing: 8px;
+        margin-bottom: -8px;
+      }
       .closing-title {
         font-family: "Syne", sans-serif;
         font-size: clamp(2rem, 4vw, 3.5rem);
@@ -1057,7 +1065,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        background: rgba(10, 22, 40, 0.85);
+        background: rgba(10, 22, 40, 0.5);
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 100px;
@@ -1164,7 +1172,7 @@
         );
         border-radius: 20px;
         padding: 28px;
-        flex: 1;
+        height: 200px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -1201,6 +1209,7 @@
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 18px 20px;
+        flex: 1;
       }
       .intro-small-label {
         font-size: 10px;
@@ -1261,7 +1270,7 @@
         margin-top: 8px;
       }
       .status-box-text {
-        font-size: 0.9rem;
+        font-size: 1.02rem;
         color: var(--muted);
         line-height: 1.6;
       }
@@ -2044,6 +2053,7 @@
         <div class="cover-bg closing-bg"></div>
         <div class="cover-grid"></div>
         <div class="closing-content">
+          <div class="closing-thank-you">OBRIGADO</div>
           <div
             class="cover-eyebrow"
             style="justify-content: center; animation: none; opacity: 1"
@@ -2057,7 +2067,7 @@
             e humano.
           </h2>
           <p class="closing-sub">
-            Obrigado pela atenção. Fico à disposição para as arguições.
+            Fico à disposição para as arguições.
           </p>
           <div class="closing-contact">
             <div class="contact-item">
