@@ -593,7 +593,11 @@
       }
       .hyp-main {
         flex: 1;
-        background: linear-gradient(135deg, var(--sus-blue) 0%, var(--sus-teal) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--sus-blue) 0%,
+          var(--sus-teal) 100%
+        );
         border-radius: 20px;
         padding: 36px 40px;
         display: flex;
@@ -626,7 +630,7 @@
       .hyp-text .hl {
         color: rgba(255, 255, 255, 0.9);
         text-decoration: underline;
-        text-decoration-color: rgba(255,255,255,0.4);
+        text-decoration-color: rgba(255, 255, 255, 0.4);
       }
       .hyp-source {
         font-size: 0.97rem;
@@ -986,72 +990,98 @@
       }
 
       /* ── CLOSING ── */
+      /*
+       * KEY FIX: .slide already sets position:absolute via .slide rule.
+       * We must NOT set position:relative here — that would override it
+       * and break the inset:0 fill. All decoration goes on ::before/::after
+       * of the slide itself, so no child overlay divs are needed.
+       */
       .slide-closing {
         background: linear-gradient(
           135deg,
-          var(--dark) 0%,
-          #0d2040 60%,
+          #0a1628 0%,
+          #0d2040 55%,
           #082030 100%
         );
         justify-content: center;
         align-items: center;
         text-align: center;
-        position: relative;
         overflow: hidden;
       }
-      .closing-bg::before {
+      /* decorative glow — safe pseudo-elements on the slide itself */
+      .slide-closing::before {
         content: "";
         position: absolute;
         width: 700px;
         height: 700px;
         background: radial-gradient(
           circle,
-          rgba(0, 94, 162, 0.2) 0%,
+          rgba(0, 94, 162, 0.22) 0%,
           transparent 65%
         );
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 50%;
+        pointer-events: none;
       }
+      .slide-closing::after {
+        content: "";
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 163, 163, 0.12) 0%,
+          transparent 70%
+        );
+        bottom: -80px;
+        left: 5vw;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      /* the single visible content wrapper — no z-index tricks needed */
       .closing-content {
-        position: relative;
-        z-index: 2;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 24px;
+        gap: 28px;
+        padding: 60px 80px;
+        position: relative; /* creates local stacking above ::before/::after */
+        z-index: 1;
+        width: 100%;
       }
       .closing-thank-you {
         font-family: "Syne", sans-serif;
-        font-size: 4.5rem;
+        font-size: clamp(3rem, 6vw, 5rem);
         font-weight: 800;
         color: var(--sus-accent);
-        letter-spacing: 10px;
+        letter-spacing: 12px;
+        line-height: 1;
       }
       .closing-title {
         font-family: "Syne", sans-serif;
-        font-size: clamp(2rem, 4vw, 3.5rem);
+        font-size: clamp(1.8rem, 3.5vw, 3rem);
         font-weight: 800;
         color: var(--white);
-        line-height: 1.1;
+        line-height: 1.15;
       }
       .closing-title .hl {
         color: var(--sus-accent);
       }
       .closing-sub {
-        font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.7);
-        max-width: 500px;
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.65);
+        max-width: 480px;
         line-height: 1.6;
       }
       .closing-contact {
         display: flex;
         gap: 48px;
-        margin-top: 16px;
-        padding: 24px 40px;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
+        margin-top: 8px;
+        padding: 22px 44px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 16px;
       }
       .contact-item {
@@ -1304,7 +1334,6 @@
   </head>
   <body>
     <div class="presentation" id="pres">
-
       <!-- SLIDE 0: CAPA -->
       <div class="slide slide-cover active" data-index="0">
         <div class="cover-bg"></div>
@@ -1316,14 +1345,14 @@
           </div>
           <h1 class="cover-title">
             ConstruSUS <span class="highlight">IA</span><br />
-            Assistente Virtual Inteligente para
-            Infraestrutura em Saúde
+            Assistente Virtual para Infraestrutura em Saúde
           </h1>
-          <p class="cover-subtitle">
+          <!-- <p class="cover-subtitle">
             Desenvolvimento e validação de um sistema baseado em Processamento
             de Linguagem Natural para apoiar gestores do SUS na estimativa de
             custos e planejamento físico de unidades hospitalares.
-          </p>
+          </p> -->
+          <br />
           <div class="cover-meta">
             <div class="meta-item">
               <span class="meta-label">Autor</span>
@@ -1347,12 +1376,16 @@
             </div>
             <div class="meta-item">
               <span class="meta-label">Linha de Pesquisa</span>
-              <span class="meta-value">Gestão de Sistemas e Processos Gerenciais</span>
+              <span class="meta-value"
+                >Gestão de Sistemas e Processos Gerenciais</span
+              >
             </div>
           </div>
           <div class="cover-badge">
             <span class="badge-dot"></span>
-            <span class="badge-text">Projeto de Pesquisa – Apresentação Oral · 2026</span>
+            <span class="badge-text"
+              >Projeto de Pesquisa – Apresentação Oral · 2026</span
+            >
           </div>
         </div>
       </div>
@@ -1385,24 +1418,25 @@
               </p>
               <div class="divider"></div>
               <p class="body-text">
-                A estimativa de custos exige <strong>consulta manual a
-                múltiplas planilhas</strong>, sem padronização metodológica
-                e com perda crônica de dados históricos — resultando em
-                retrabalho e comprometimento do planejamento orçamentário.
+                A estimativa de custos exige
+                <strong>consulta manual a múltiplas planilhas</strong>, sem
+                padronização metodológica e com perda crônica de dados
+                históricos — resultando em retrabalho e comprometimento do
+                planejamento orçamentário.
               </p>
               <div class="issue-item">
                 <div class="issue-icon">📋</div>
                 <div class="issue-text">
-                  <strong>Fragmentação de Fontes</strong>SINAPI, SIGEM, RDC 50
-                  e SOMASUS são consultados em silos, sem integração.
+                  <strong>Fragmentação de Fontes</strong>SINAPI, SIGEM, RDC 50 e
+                  SOMASUS são consultados em silos, sem integração.
                 </div>
               </div>
               <div class="issue-item">
                 <div class="issue-icon">📉</div>
                 <div class="issue-text">
                   <strong>Perda de Memória Institucional</strong>Estimativas
-                  históricas raramente são registradas; benchmarks confiáveis
-                  de custo por tipologia são inexistentes.
+                  históricas raramente são registradas; benchmarks confiáveis de
+                  custo por tipologia são inexistentes.
                 </div>
               </div>
             </div>
@@ -1481,11 +1515,7 @@
                 "
               >
                 <p
-                  style="
-                    font-size: 1rem;
-                    color: var(--dark);
-                    line-height: 1.6;
-                  "
+                  style="font-size: 1rem; color: var(--dark); line-height: 1.6"
                 >
                   <strong>Pergunta norteadora:</strong> Em que medida um
                   assistente virtual baseado em PLN, integrado às bases oficiais
@@ -1498,8 +1528,8 @@
               <div class="problem-stat">
                 <span class="num">3+</span>
                 <span class="desc"
-                  >bases oficiais sem integração (SINAPI, SIGEM,
-                  SOMASUS, RDC 50)</span
+                  >bases oficiais sem integração (SINAPI, SIGEM, SOMASUS, RDC
+                  50)</span
                 >
               </div>
               <div class="problem-divider"></div>
@@ -1542,7 +1572,7 @@
           </h2>
           <div class="obj-main">
             <div class="obj-main-label">Objetivo Geral</div>
-            <div class="obj-main-text" style="text-align: center;">
+            <div class="obj-main-text" style="text-align: center">
               Desenvolver, implementar e avaliar um assistente virtual com PLN
               para apoiar gestores do SUS na estimativa de custos e
               dimensionamento físico de unidades de saúde — integrando SINAPI,
@@ -1553,8 +1583,8 @@
             <div class="obj-item">
               <div class="obj-num">1</div>
               <div class="obj-item-text">
-                Levantar e organizar as bases oficiais — SINAPI, SIGEM e
-                fontes complementares — para parâmetros de custos de obras e
+                Levantar e organizar as bases oficiais — SINAPI, SIGEM e fontes
+                complementares — para parâmetros de custos de obras e
                 equipamentos de saúde.
               </div>
             </div>
@@ -1562,8 +1592,8 @@
               <div class="obj-num">2</div>
               <div class="obj-item-text">
                 Desenvolver módulo de PLN capaz de compreender perguntas em
-                português e extrair intenções relacionadas a custos,
-                materiais e dimensionamento físico.
+                português e extrair intenções relacionadas a custos, materiais e
+                dimensionamento físico.
               </div>
             </div>
             <div class="obj-item">
@@ -1577,8 +1607,8 @@
             <div class="obj-item">
               <div class="obj-num">4</div>
               <div class="obj-item-text">
-                Validar o assistente com gestores do SUS, avaliando acurácia
-                das estimativas e satisfação com a ferramenta.
+                Validar o assistente com gestores do SUS, avaliando acurácia das
+                estimativas e satisfação com a ferramenta.
               </div>
             </div>
             <div class="obj-item">
@@ -1613,7 +1643,9 @@
             <div class="hyp-main">
               <p class="hyp-text">
                 A utilização de ferramenta de
-                <span class="hl">linguagem natural baseada em Inteligência Artificial</span>
+                <span class="hl"
+                  >linguagem natural baseada em Inteligência Artificial</span
+                >
                 será capaz de produzir estimativas de custo de infraestrutura
                 hospitalar com acurácia comparável à prática convencional,
                 reduzindo o tempo de resposta e aumentando a satisfação dos
@@ -1622,8 +1654,8 @@
               <p class="hyp-source">
                 Hipótese derivada da lacuna entre a disponibilidade de dados
                 oficiais e a ausência de ferramentas integradas — identificada
-                na prática profissional do pesquisador e na literatura de
-                saúde digital.
+                na prática profissional do pesquisador e na literatura de saúde
+                digital.
               </p>
             </div>
             <div class="hyp-side">
@@ -1675,7 +1707,9 @@
               <div class="method-step">
                 <div class="step-dot">1</div>
                 <div class="step-content">
-                  <div class="step-title">Revisão Sistemática e Coleta de Bases</div>
+                  <div class="step-title">
+                    Revisão Sistemática e Coleta de Bases
+                  </div>
                   <div class="step-desc">
                     Organização das bases SINAPI, SIGEM, RDC 50, SOMASUS e
                     histórico SES-GO em banco relacional (PostgreSQL/Supabase).
@@ -1696,7 +1730,9 @@
               <div class="method-step">
                 <div class="step-dot">3</div>
                 <div class="step-content">
-                  <div class="step-title">Teste Piloto — Ambiente Institucional</div>
+                  <div class="step-title">
+                    Teste Piloto — Ambiente Institucional
+                  </div>
                   <div class="step-desc">
                     Usuários-chave de hospital de grande porte e/ou Secretaria
                     de Saúde utilizarão o assistente em situações reais de
@@ -1710,8 +1746,8 @@
                   <div class="step-title">Coleta de Dados e Análise</div>
                   <div class="step-desc">
                     Logs de interação (quantitativo) + entrevistas
-                    semiestruturadas com gestores (qualitativo). Triangulação
-                    de dados.
+                    semiestruturadas com gestores (qualitativo). Triangulação de
+                    dados.
                   </div>
                 </div>
               </div>
@@ -1730,8 +1766,8 @@
                   <div class="metric-icon mi-teal">😊</div>
                   <div class="eval-metric-text">
                     <strong>Satisfação dos Gestores</strong>Questionário
-                    estruturado (escala Likert) e grupos focais com gestores
-                    de infraestrutura.
+                    estruturado (escala Likert) e grupos focais com gestores de
+                    infraestrutura.
                   </div>
                 </div>
               </div>
@@ -1774,46 +1810,67 @@
               <div class="tl-month-label">M19–24</div>
             </div>
             <div class="timeline-row">
-              <div class="tl-label">Revisão teórica e coleta de bases SUS/SINAPI</div>
+              <div class="tl-label">
+                Revisão teórica e coleta de bases SUS/SINAPI
+              </div>
               <div class="tl-bar-wrap">
-                <div class="tl-bar blue" style="left: 0%; width: 16.7%">Fase 1</div>
+                <div class="tl-bar blue" style="left: 0%; width: 16.7%">
+                  Fase 1
+                </div>
               </div>
             </div>
             <div class="timeline-row">
-              <div class="tl-label">Desenvolvimento do protótipo do chatbot</div>
+              <div class="tl-label">
+                Desenvolvimento do protótipo do chatbot
+              </div>
               <div class="tl-bar-wrap">
-                <div class="tl-bar teal" style="left: 16.7%; width: 16.7%">Fase 2</div>
+                <div class="tl-bar teal" style="left: 16.7%; width: 16.7%">
+                  Fase 2
+                </div>
               </div>
             </div>
             <div class="timeline-row">
-              <div class="tl-label">Teste piloto — hospital / Secretaria de Saúde</div>
+              <div class="tl-label">
+                Teste piloto — hospital / Secretaria de Saúde
+              </div>
               <div class="tl-bar-wrap">
-                <div class="tl-bar accent" style="left: 33.4%; width: 16.7%">Fase 3</div>
+                <div class="tl-bar accent" style="left: 33.4%; width: 16.7%">
+                  Fase 3
+                </div>
               </div>
             </div>
             <div class="timeline-row">
               <div class="tl-label">Análise de dados e ajustes no sistema</div>
               <div class="tl-bar-wrap">
-                <div class="tl-bar blue" style="left: 50.1%; width: 16.7%">Fase 4</div>
+                <div class="tl-bar blue" style="left: 50.1%; width: 16.7%">
+                  Fase 4
+                </div>
               </div>
             </div>
             <div class="timeline-row">
-              <div class="tl-label">Redação parcial e aprofundamento teórico</div>
+              <div class="tl-label">
+                Redação parcial e aprofundamento teórico
+              </div>
               <div class="tl-bar-wrap">
-                <div class="tl-bar teal" style="left: 54%; width: 29%">Fase 5</div>
+                <div class="tl-bar teal" style="left: 54%; width: 29%">
+                  Fase 5
+                </div>
               </div>
             </div>
             <div class="timeline-row">
               <div class="tl-label">Consolidação, redação final e defesa</div>
               <div class="tl-bar-wrap">
-                <div class="tl-bar gold" style="left: 75%; width: 25%">Fase 6 – Defesa</div>
+                <div class="tl-bar gold" style="left: 75%; width: 25%">
+                  Fase 6 – Defesa
+                </div>
               </div>
             </div>
           </div>
           <div class="status-box">
             <p class="status-box-text">
-              <strong>Status atual (2026):</strong> Fase 1–2 simultânea — bases SINAPI, SIGEM e SOMASUS
-              em estruturação e protótipo do assistente em desenvolvimento ativo.
+              <strong>Status atual (2026):</strong> Fase 1–2 simultânea — bases
+              SINAPI, SIGEM e SOMASUS em estruturação e protótipo do assistente
+              em desenvolvimento ativo.
             </p>
           </div>
         </div>
@@ -1842,8 +1899,8 @@
               <div class="budget-cat">Infraestrutura de TI</div>
               <div class="budget-value">R$ 8.400</div>
               <div class="budget-desc">
-                Cloud (Supabase/Vercel), API OpenAI e armazenamento por
-                24 meses.
+                Cloud (Supabase/Vercel), API OpenAI e armazenamento por 24
+                meses.
               </div>
             </div>
             <div class="budget-item">
@@ -1877,8 +1934,8 @@
           </div>
           <div class="budget-note">
             ⚠️ Parte significativa da infraestrutura tecnológica já está
-            disponível pelo pesquisador. O orçamento pode ser reduzido
-            mediante parcerias institucionais.
+            disponível pelo pesquisador. O orçamento pode ser reduzido mediante
+            parcerias institucionais.
           </div>
         </div>
       </div>
@@ -1929,8 +1986,8 @@
               <div class="card-label">Dados</div>
               <div class="card-title">Base integrada</div>
               <div class="card-text">
-                Repositório unificado com SINAPI, SIGEM, SOMASUS e histórico
-                de obras da SES-GO, atualizável continuamente.
+                Repositório unificado com SINAPI, SIGEM, SOMASUS e histórico de
+                obras da SES-GO, atualizável continuamente.
               </div>
             </div>
             <div class="card">
@@ -1945,8 +2002,8 @@
               <div class="card-label">Gestão</div>
               <div class="card-title">Guia de implementação</div>
               <div class="card-text">
-                Produto técnico com diretrizes para adoção do ConstruSUS IA
-                nos diferentes níveis de gestão do SUS.
+                Produto técnico com diretrizes para adoção do ConstruSUS IA nos
+                diferentes níveis de gestão do SUS.
               </div>
             </div>
           </div>
@@ -1973,51 +2030,55 @@
               <div class="ref-num">1</div>
               <div class="ref-text">
                 ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS.
-                <em>NBR 15965-1</em>: sistemas de classificação da informação
-                da construção. Rio de Janeiro: ABNT, 2011.
+                <em>NBR 15965-1</em>: sistemas de classificação da informação da
+                construção. Rio de Janeiro: ABNT, 2011.
               </div>
             </div>
             <div class="ref-item">
               <div class="ref-num">2</div>
               <div class="ref-text">
                 BRASIL. Ministério da Saúde.
-                <em>Manual de planejamento e projetos físicos de
-                estabelecimentos assistenciais de saúde</em>.
-                Brasília, DF: Ministério da Saúde, 2013.
+                <em
+                  >Manual de planejamento e projetos físicos de estabelecimentos
+                  assistenciais de saúde</em
+                >. Brasília, DF: Ministério da Saúde, 2013.
               </div>
             </div>
             <div class="ref-item">
               <div class="ref-num">3</div>
               <div class="ref-text">
                 BRASIL. Ministério da Saúde.
-                <em>Manual de estrutura física das unidades básicas de saúde</em>.
-                2. ed. Brasília, DF: Ministério da Saúde, 2019.
+                <em>Manual de estrutura física das unidades básicas de saúde</em
+                >. 2. ed. Brasília, DF: Ministério da Saúde, 2019.
               </div>
             </div>
             <div class="ref-item">
               <div class="ref-num">4</div>
               <div class="ref-text">
                 BRASIL. Ministério da Saúde.
-                <em>Normas para projetos físicos de estabelecimentos
-                assistenciais de saúde</em>.
-                Brasília, DF: Ministério da Saúde, 1994.
+                <em
+                  >Normas para projetos físicos de estabelecimentos
+                  assistenciais de saúde</em
+                >. Brasília, DF: Ministério da Saúde, 1994.
               </div>
             </div>
             <div class="ref-item">
               <div class="ref-num">5</div>
               <div class="ref-text">
-                BRASIL. Ministério da Saúde. Portaria n. 2.048, de 5 de
-                novembro de 2002. <em>Diário Oficial da União</em>: seção 1,
-                Brasília, DF, 7 nov. 2002.
+                BRASIL. Ministério da Saúde. Portaria n. 2.048, de 5 de novembro
+                de 2002. <em>Diário Oficial da União</em>: seção 1, Brasília,
+                DF, 7 nov. 2002.
               </div>
             </div>
             <div class="ref-item">
               <div class="ref-num">6</div>
               <div class="ref-text">
                 CAIXA ECONÔMICA FEDERAL.
-                <em>SINAPI – Sistema Nacional de Pesquisa de Custos e Índices
-                da Construção Civil</em>. Brasília, DF: CEF, 2024. Disponível
-                em: http://www.caixa.gov.br. Acesso em: 10 set. 2024.
+                <em
+                  >SINAPI – Sistema Nacional de Pesquisa de Custos e Índices da
+                  Construção Civil</em
+                >. Brasília, DF: CEF, 2024. Disponível em:
+                http://www.caixa.gov.br. Acesso em: 10 set. 2024.
               </div>
             </div>
             <div class="ref-item">
@@ -2033,8 +2094,8 @@
               <div class="ref-text">
                 MENEZES, Gabriel.
                 <em>Construindo chatbots com Python</em>: aprenda a desenvolver
-                um chatbot inteligente usando PLN. São Paulo: Novatec
-                Editora, 2021.
+                um chatbot inteligente usando PLN. São Paulo: Novatec Editora,
+                2021.
               </div>
             </div>
             <div class="ref-item">
@@ -2051,8 +2112,8 @@
               <div class="ref-text">
                 SILVA, A. B. et al. Gestão de infraestrutura hospitalar:
                 desafios e oportunidades na modernização do SUS.
-                <em>Revista de Administração em Saúde</em>, [S. l.], v. 12,
-                n. 2, p. 33-42, 2024.
+                <em>Revista de Administração em Saúde</em>, [S. l.], v. 12, n.
+                2, p. 33-42, 2024.
               </div>
             </div>
             <div class="ref-item">
@@ -2069,17 +2130,11 @@
 
       <!-- SLIDE 10: OBRIGADO -->
       <div class="slide slide-closing" data-index="10">
-        <div class="cover-bg closing-bg"></div>
-        <div class="cover-grid"></div>
-
+        <!-- NO overlay divs — decoration is handled by .slide-closing::before/::after -->
         <div class="closing-content">
           <div class="closing-thank-you">OBRIGADO</div>
-          <h2 class="closing-title">
-            ConstruSUS <span class="hl">IA</span>
-          </h2>
-          <p class="closing-sub">
-            Fico à disposição para as arguições.
-          </p>
+
+          <p class="closing-sub">Fico à disposição para as arguições.</p>
           <div class="closing-contact">
             <div class="contact-item">
               <span class="contact-label">Autor</span>
@@ -2096,13 +2151,16 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="nav" id="nav">
-      <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">&#8592;</button>
+      <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+        &#8592;
+      </button>
       <div class="nav-dots" id="navDots"></div>
-      <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+      <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+        &#8594;
+      </button>
       <span class="nav-progress" id="navProgress">1 / 11</span>
     </div>
 
